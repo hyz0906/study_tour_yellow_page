@@ -6,8 +6,10 @@ import { AdminLayout } from '@/components/admin/AdminLayout'
 import { Button } from '@/components/ui/Button'
 import { getReports, updateReportStatus, updateCommentStatus, type Report } from '@/lib/admin'
 import { toast } from 'react-hot-toast'
+import { useTranslation } from '@/hooks/useTranslation'
 
 export default function AdminReports() {
+  const { t } = useTranslation()
   const [reports, setReports] = useState<Report[]>([])
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState<string | null>(null)
@@ -44,10 +46,10 @@ export default function AdminReports() {
     setProcessing(reportId)
     try {
       await updateReportStatus(reportId, action)
-      toast.success(`Report ${action} successfully`)
+      toast.success(t('admin.reports.actionSuccess'))
       await loadReports()
     } catch (error) {
-      toast.error(`Failed to ${action} report`)
+      toast.error(t('admin.reports.actionError'))
     } finally {
       setProcessing(null)
     }
@@ -60,10 +62,10 @@ export default function AdminReports() {
     setProcessing(commentId)
     try {
       await updateCommentStatus(commentId, action)
-      toast.success(`Comment ${action} successfully`)
+      toast.success(t('admin.reports.actionSuccess'))
       await loadReports()
     } catch (error) {
-      toast.error(`Failed to ${action} comment`)
+      toast.error(t('admin.reports.actionError'))
     } finally {
       setProcessing(null)
     }
@@ -84,9 +86,9 @@ export default function AdminReports() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Reports Management</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('admin.reports.title')}</h1>
             <p className="mt-1 text-sm text-gray-600">
-              Review and moderate reported content
+              {t('admin.reports.subtitle')}
             </p>
           </div>
 
@@ -96,9 +98,9 @@ export default function AdminReports() {
               onChange={(e) => setFilter(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
             >
-              <option value="pending">Pending</option>
+              <option value="pending">{t('common.pending')}</option>
               <option value="reviewed">Reviewed</option>
-              <option value="rejected">Rejected</option>
+              <option value="rejected">{t('common.rejected')}</option>
               <option value="all">All Reports</option>
             </select>
           </div>
@@ -127,13 +129,13 @@ export default function AdminReports() {
                           {report.status}
                         </span>
                         <span className="text-sm text-gray-500">
-                          Reported {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
+                          {t('admin.reports.reportedBy')} {formatDistanceToNow(new Date(report.created_at), { addSuffix: true })}
                         </span>
                       </div>
 
                       <div className="mb-4">
                         <h3 className="text-lg font-medium text-gray-900 mb-2">
-                          Report Reason
+                          {t('admin.reports.reason')}
                         </h3>
                         <p className="text-gray-700">{report.reason}</p>
                       </div>
@@ -141,7 +143,7 @@ export default function AdminReports() {
                       {report.comments && (
                         <div className="bg-gray-50 rounded-lg p-4 mb-4">
                           <h4 className="text-sm font-medium text-gray-900 mb-2">
-                            Reported Comment
+                            {t('admin.reports.reportedContent')}
                           </h4>
                           <p className="text-sm text-gray-700 mb-2">
                             {report.comments.content}
@@ -155,7 +157,7 @@ export default function AdminReports() {
                       )}
 
                       <div className="text-sm text-gray-500">
-                        Reported by: {report.users?.nickname || report.users?.email || 'Unknown'}
+                        {t('admin.reports.reportedBy')}: {report.users?.nickname || report.users?.email || 'Unknown'}
                       </div>
                     </div>
 
@@ -166,7 +168,7 @@ export default function AdminReports() {
                           onClick={() => handleReportAction(report.id, 'reviewed')}
                           loading={processing === report.id}
                         >
-                          Mark Reviewed
+                          {t('admin.reports.markReviewed')}
                         </Button>
 
                         <Button
@@ -175,7 +177,7 @@ export default function AdminReports() {
                           onClick={() => handleReportAction(report.id, 'rejected')}
                           loading={processing === report.id}
                         >
-                          Reject Report
+                          {t('admin.reports.rejectReport')}
                         </Button>
 
                         {report.comment_id && (
@@ -186,7 +188,7 @@ export default function AdminReports() {
                               onClick={() => handleCommentAction(report.comment_id!, 'hidden')}
                               loading={processing === report.comment_id}
                             >
-                              Hide Comment
+                              {t('admin.reports.hideComment')}
                             </Button>
 
                             <Button
@@ -196,7 +198,7 @@ export default function AdminReports() {
                               onClick={() => handleCommentAction(report.comment_id!, 'deleted')}
                               loading={processing === report.comment_id}
                             >
-                              Delete Comment
+                              {t('admin.reports.deleteComment')}
                             </Button>
                           </>
                         )}
@@ -224,7 +226,7 @@ export default function AdminReports() {
                 onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
                 disabled={pagination.page <= 1}
               >
-                Previous
+                {t('common.previous')}
               </Button>
               <Button
                 variant="outline"
@@ -232,7 +234,7 @@ export default function AdminReports() {
                 onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
                 disabled={pagination.page >= Math.ceil(pagination.total / pagination.pageSize)}
               >
-                Next
+                {t('common.next')}
               </Button>
             </div>
           </div>

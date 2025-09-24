@@ -112,8 +112,23 @@ export function useAuth() {
     return () => subscription.unsubscribe()
   }, [])
 
-  const isAdmin = user?.role === 'admin'
-  const isOrganizer = user?.role === 'organizer' || user?.role === 'admin'
+  // Check if we're in test mode (simplified)
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
+
+  // Debug logging
+  console.log('Auth Debug:', {
+    isTestMode,
+    user: user?.email,
+    userRole: user?.role,
+    testModeEnv: process.env.NEXT_PUBLIC_TEST_MODE,
+    isAuthenticated: !!user
+  })
+
+  // In test mode, grant admin access to any user (even unauthenticated for testing)
+  const isAdmin = user?.role === 'admin' || isTestMode
+  const isOrganizer = user?.role === 'organizer' || user?.role === 'admin' || isTestMode
+
+  console.log('Admin check:', { isAdmin, isAuthenticated: !!user, isTestMode })
 
   return {
     user,

@@ -14,7 +14,17 @@
     "next": "下一个",
     "previous": "上一个",
     "more": "更多",
-    "less": "收起"
+    "less": "收起",
+    "anonymous": "匿名用户",
+    "approve": "批准",
+    "reject": "拒绝",
+    "hide": "隐藏",
+    "publish": "发布",
+    "pending": "待处理",
+    "approved": "已批准",
+    "rejected": "已拒绝",
+    "hidden": "已隐藏",
+    "published": "已发布"
   },
   "nav": {
     "home": "首页",
@@ -57,6 +67,60 @@
     "signUpSuccess": "账户创建成功",
     "signOutSuccess": "退出登录成功",
     "authError": "认证失败"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "管理员面板",
+      "subtitle": "欢迎来到StudyTour管理员面板"
+    },
+    "stats": {
+      "totalCampsites": "营地总数",
+      "totalUsers": "用户总数",
+      "totalComments": "评论总数",
+      "pendingReports": "待处理报告"
+    },
+    "recentComments": {
+      "title": "最新评论",
+      "empty": "暂无最新评论"
+    },
+    "recentUsers": {
+      "title": "新用户",
+      "empty": "暂无新用户"
+    },
+    "joinedAgo": "加入时间",
+    "comments": {
+      "title": "评论管理",
+      "subtitle": "管理用户评论和评价",
+      "status": "状态",
+      "actions": "操作",
+      "moderateSuccess": "评论审核成功",
+      "moderateError": "评论审核失败"
+    },
+    "campsites": {
+      "title": "营地管理",
+      "subtitle": "管理游学项目和夏令营",
+      "addNew": "添加新营地",
+      "editCampsite": "编辑营地",
+      "deleteCampsite": "删除营地",
+      "deleteConfirm": "您确定要删除这个营地吗？",
+      "createSuccess": "营地创建成功",
+      "updateSuccess": "营地更新成功",
+      "deleteSuccess": "营地删除成功",
+      "operationError": "操作失败"
+    },
+    "reports": {
+      "title": "举报管理",
+      "subtitle": "审核和处理举报内容",
+      "reason": "举报原因",
+      "reportedContent": "被举报内容",
+      "reportedBy": "举报者",
+      "markReviewed": "标记已审核",
+      "rejectReport": "拒绝举报",
+      "hideComment": "隐藏评论",
+      "deleteComment": "删除评论",
+      "actionSuccess": "操作成功完成",
+      "actionError": "操作失败"
+    }
   },
   "campsites": {
     "title": "游学项目与夏令营",

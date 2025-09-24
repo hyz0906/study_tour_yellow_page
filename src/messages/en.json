@@ -14,7 +14,17 @@
     "next": "Next",
     "previous": "Previous",
     "more": "More",
-    "less": "Less"
+    "less": "Less",
+    "anonymous": "Anonymous",
+    "approve": "Approve",
+    "reject": "Reject",
+    "hide": "Hide",
+    "publish": "Publish",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "hidden": "Hidden",
+    "published": "Published"
   },
   "nav": {
     "home": "Home",
@@ -57,6 +67,60 @@
     "signUpSuccess": "Account created successfully",
     "signOutSuccess": "Signed out successfully",
     "authError": "Authentication failed"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "subtitle": "Welcome to the StudyTour admin dashboard"
+    },
+    "stats": {
+      "totalCampsites": "Total Campsites",
+      "totalUsers": "Total Users",
+      "totalComments": "Total Comments",
+      "pendingReports": "Pending Reports"
+    },
+    "recentComments": {
+      "title": "Recent Comments",
+      "empty": "No recent comments"
+    },
+    "recentUsers": {
+      "title": "Recent Users",
+      "empty": "No recent users"
+    },
+    "joinedAgo": "Joined",
+    "comments": {
+      "title": "Comments Management",
+      "subtitle": "Moderate user comments and reviews",
+      "status": "Status",
+      "actions": "Actions",
+      "moderateSuccess": "Comment moderated successfully",
+      "moderateError": "Failed to moderate comment"
+    },
+    "campsites": {
+      "title": "Campsites Management",
+      "subtitle": "Manage study tours and camps",
+      "addNew": "Add New Campsite",
+      "editCampsite": "Edit Campsite",
+      "deleteCampsite": "Delete Campsite",
+      "deleteConfirm": "Are you sure you want to delete this campsite?",
+      "createSuccess": "Campsite created successfully",
+      "updateSuccess": "Campsite updated successfully",
+      "deleteSuccess": "Campsite deleted successfully",
+      "operationError": "Operation failed"
+    },
+    "reports": {
+      "title": "Reports Management",
+      "subtitle": "Review and moderate reported content",
+      "reason": "Report Reason",
+      "reportedContent": "Reported Content",
+      "reportedBy": "Reported By",
+      "markReviewed": "Mark Reviewed",
+      "rejectReport": "Reject Report",
+      "hideComment": "Hide Comment",
+      "deleteComment": "Delete Comment",
+      "actionSuccess": "Action completed successfully",
+      "actionError": "Action failed"
+    }
   },
   "campsites": {
     "title": "Study Tours & Camps",

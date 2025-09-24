@@ -10,6 +10,9 @@ import {
 import { AdminLayout } from '@/components/admin/AdminLayout'
 import { StatsCard } from '@/components/admin/StatsCard'
 import { getAdminStats, getRecentComments, getRecentUsers, type AdminStats } from '@/lib/admin'
+import { formatDistanceToNow } from 'date-fns'
+import { toast } from 'react-hot-toast'
+import { useTranslation } from '@/hooks/useTranslation'
 
 // Define types for the data
 interface Comment {
@@ -31,10 +34,9 @@ interface User {
   role: string
   created_at: string
 }
-import { formatDistanceToNow } from 'date-fns'
-import { toast } from 'react-hot-toast'
 
 export default function AdminDashboard() {
+  const { t } = useTranslation()
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [recentComments, setRecentComments] = useState<Comment[]>([])
   const [recentUsers, setRecentUsers] = useState<User[]>([])
@@ -78,9 +80,9 @@ export default function AdminDashboard() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{t('admin.dashboard.title')}</h1>
           <p className="mt-1 text-sm text-gray-600">
-            Welcome to the StudyTour admin dashboard
+            {t('admin.dashboard.subtitle')}
           </p>
         </div>
 
@@ -88,25 +90,25 @@ export default function AdminDashboard() {
         {stats && (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             <StatsCard
-              title="Total Campsites"
+              title={t('admin.stats.totalCampsites')}
               value={stats.totalCampsites}
               icon={GlobeAltIcon}
               color="blue"
             />
             <StatsCard
-              title="Total Users"
+              title={t('admin.stats.totalUsers')}
               value={stats.totalUsers}
               icon={UserGroupIcon}
               color="green"
             />
             <StatsCard
-              title="Total Comments"
+              title={t('admin.stats.totalComments')}
               value={stats.totalComments}
               icon={ChatBubbleLeftRightIcon}
               color="purple"
             />
             <StatsCard
-              title="Pending Reports"
+              title={t('admin.stats.pendingReports')}
               value={stats.pendingReports}
               icon={ExclamationTriangleIcon}
               color="red"
@@ -119,18 +121,18 @@ export default function AdminDashboard() {
           <div className="bg-white shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                Recent Comments
+                {t('admin.recentComments.title')}
               </h3>
               <div className="space-y-4">
                 {recentComments.length === 0 ? (
-                  <p className="text-sm text-gray-500">No recent comments</p>
+                  <p className="text-sm text-gray-500">{t('admin.recentComments.empty')}</p>
                 ) : (
                   recentComments.map((comment) => (
                     <div key={comment.id} className="border-b border-gray-200 pb-4 last:border-b-0">
                       <div className="flex items-start space-x-3">
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900">
-                            {comment.users?.nickname || 'Anonymous'}
+                            {comment.users?.nickname || t('common.anonymous')}
                           </p>
                           <p className="text-sm text-gray-600 line-clamp-2">
                             {comment.content}
@@ -153,11 +155,11 @@ export default function AdminDashboard() {
           <div className="bg-white shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
               <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                Recent Users
+                {t('admin.recentUsers.title')}
               </h3>
               <div className="space-y-4">
                 {recentUsers.length === 0 ? (
-                  <p className="text-sm text-gray-500">No recent users</p>
+                  <p className="text-sm text-gray-500">{t('admin.recentUsers.empty')}</p>
                 ) : (
                   recentUsers.map((user) => (
                     <div key={user.id} className="border-b border-gray-200 pb-4 last:border-b-0">
@@ -170,7 +172,7 @@ export default function AdminDashboard() {
                           <div className="mt-1 flex items-center space-x-2 text-xs text-gray-500">
                             <span className="capitalize">{user.role}</span>
                             <span>•</span>
-                            <span>Joined {formatDistanceToNow(new Date(user.created_at), { addSuffix: true })}</span>
+                            <span>{t('admin.joinedAgo')} {formatDistanceToNow(new Date(user.created_at), { addSuffix: true })}</span>
                           </div>
                         </div>
                       </div>

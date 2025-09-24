@@ -108,6 +108,17 @@ export default function HomePage() {
             </Button>
           </Link>
         </div>
+
+        {/* Test Mode Admin Button */}
+        {process.env.NEXT_PUBLIC_TEST_MODE === 'true' && (
+          <div className="mt-8 text-center">
+            <Link href={`/${locale}/admin`}>
+              <Button size="lg" className="bg-red-600 hover:bg-red-700">
+                🧪 Test Admin Panel Access
+              </Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

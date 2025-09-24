@@ -12,6 +12,7 @@ import {
   GlobeAltIcon,
 } from '@heroicons/react/24/outline'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/hooks/useTranslation'
 
 interface AdminLayoutProps {
   children: React.ReactNode
@@ -19,14 +20,19 @@ interface AdminLayoutProps {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const { user, loading, isAdmin } = useAuth()
+  const { locale } = useTranslation()
   const router = useRouter()
   const pathname = usePathname()
 
+  // Check if we're in test mode
+  const isTestMode = process.env.NEXT_PUBLIC_TEST_MODE === 'true'
+
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
-      router.push('/')
+    // In test mode, allow access without authentication
+    if (!loading && !isTestMode && (!user || !isAdmin)) {
+      router.push(`/${locale}`)
     }
-  }, [user, loading, isAdmin, router])
+  }, [user, loading, isAdmin, router, locale, isTestMode])
 
   if (loading) {
     return (
@@ -36,16 +42,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     )
   }
 
-  if (!user || !isAdmin) {
+  if (!isTestMode && (!user || !isAdmin)) {
     return null
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: HomeIcon },
-    { name: 'Campsites', href: '/admin/campsites', icon: GlobeAltIcon },
-    { name: 'Users', href: '/admin/users', icon: UserGroupIcon },
-    { name: 'Comments', href: '/admin/comments', icon: ChatBubbleLeftRightIcon },
-    { name: 'Reports', href: '/admin/reports', icon: ExclamationTriangleIcon },
+    { name: 'Dashboard', href: `/${locale}/admin`, icon: HomeIcon },
+    { name: 'Campsites', href: `/${locale}/admin/campsites`, icon: GlobeAltIcon },
+    { name: 'Users', href: `/${locale}/admin/users`, icon: UserGroupIcon },
+    { name: 'Comments', href: `/${locale}/admin/comments`, icon: ChatBubbleLeftRightIcon },
+    { name: 'Reports', href: `/${locale}/admin/reports`, icon: ExclamationTriangleIcon },
   ]
 
   return (
@@ -54,7 +60,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <div className="hidden md:flex md:w-64 md:flex-col">
         <div className="flex flex-col flex-grow pt-5 bg-white overflow-y-auto border-r border-gray-200">
           <div className="flex items-center flex-shrink-0 px-4">
-            <Link href="/" className="text-xl font-bold text-primary-600">
+            <Link href={`/${locale}`} className="text-xl font-bold text-primary-600">
               StudyTour Admin
             </Link>
           </div>
@@ -89,10 +95,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <div className="flex items-center">
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">
-                  {user.nickname || user.email}
+                  {isTestMode ? 'Test Admin' : (user?.nickname || user?.email)}
                 </p>
                 <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">
-                  Admin
+                  {isTestMode ? 'Test Mode' : 'Admin'}
                 </p>
               </div>
             </div>
