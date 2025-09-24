@@ -1,17 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { getCampsites, getCountries, type CampsiteFilters } from '@/lib/campsites'
+import { getCampsites, getCountries, type CampsiteFilters as CampsiteFiltersType } from '@/lib/campsites'
 import { CampsiteGrid } from '@/components/campsite/CampsiteGrid'
 import { CampsiteFilters } from '@/components/campsite/CampsiteFilters'
 import { Button } from '@/components/ui/Button'
+import { useTranslation } from '@/hooks/useTranslation'
 import { toast } from 'react-hot-toast'
 
 export default function CampsitesPage() {
+  const { t } = useTranslation()
   const [campsites, setCampsites] = useState([])
   const [countries, setCountries] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filters, setFilters] = useState<CampsiteFilters>({})
+  const [filters, setFilters] = useState<CampsiteFiltersType>({})
   const [pagination, setPagination] = useState({
     page: 1,
     pageSize: 12,
@@ -49,7 +51,7 @@ export default function CampsitesPage() {
     }
   }
 
-  const handleFiltersChange = (newFilters: CampsiteFilters) => {
+  const handleFiltersChange = (newFilters: CampsiteFiltersType) => {
     setFilters(newFilters)
     setPagination(prev => ({ ...prev, page: 1 }))
   }
@@ -65,7 +67,7 @@ export default function CampsitesPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Discover Amazing Campsites
+          {t('campsites.title')}
         </h1>
         <p className="text-lg text-gray-600">
           Explore {pagination.total} carefully curated study tours and educational programs worldwide
@@ -83,7 +85,7 @@ export default function CampsitesPage() {
       {hasMore && !loading && (
         <div className="text-center mt-8">
           <Button onClick={handleLoadMore} size="lg">
-            Load More Campsites
+            {t('common.more')} Campsites
           </Button>
         </div>
       )}

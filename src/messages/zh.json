@@ -1,0 +1,123 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "search": "搜索",
+    "filter": "筛选",
+    "clear": "清除",
+    "submit": "提交",
+    "back": "返回",
+    "next": "下一个",
+    "previous": "上一个",
+    "more": "更多",
+    "less": "收起"
+  },
+  "nav": {
+    "home": "首页",
+    "campsites": "营地",
+    "admin": "管理",
+    "profile": "个人资料",
+    "signIn": "登录",
+    "signOut": "退出登录",
+    "testMode": "测试模式：使用模拟数据运行（无需 Supabase）"
+  },
+  "home": {
+    "heroTitle": "发现精彩",
+    "heroSubtitle": "游学项目与夏令营",
+    "heroDescription": "从我们精心挑选的全球游学项目、夏令营和国际教育计划中，找到完美的教育冒险之旅。",
+    "exploreCampsites": "探索营地",
+    "joinCommunity": "加入社区",
+    "whyChooseTitle": "为什么选择StudyTour？",
+    "whyChooseDescription": "我们让您轻松找到和比较全球教育项目",
+    "searchFilterTitle": "便捷搜索与筛选",
+    "searchFilterDescription": "使用我们强大的搜索工具，按地点、类别、年龄组和评分查找项目",
+    "reviewsTitle": "真实评价与评分",
+    "reviewsDescription": "阅读亲身体验过这些项目的家长和学生的真实评价",
+    "globalNetworkTitle": "全球网络",
+    "globalNetworkDescription": "访问来自世界各地的项目，从本地夏令营到国际游学项目",
+    "ctaTitle": "准备开始您的冒险了吗？",
+    "ctaDescription": "加入数千个通过StudyTour找到完美教育体验的家庭",
+    "browseCampsites": "立即浏览营地"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signUp": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "fullName": "全名",
+    "forgotPassword": "忘记密码？",
+    "noAccount": "没有账户？",
+    "hasAccount": "已有账户？",
+    "signInWithGoogle": "使用Google继续",
+    "signInSuccess": "登录成功",
+    "signUpSuccess": "账户创建成功",
+    "signOutSuccess": "退出登录成功",
+    "authError": "认证失败"
+  },
+  "campsites": {
+    "title": "游学项目与夏令营",
+    "searchPlaceholder": "搜索营地...",
+    "allCountries": "所有国家",
+    "allCategories": "所有类别",
+    "categories": {
+      "summer": "夏令营",
+      "winter": "冬令营",
+      "study": "游学",
+      "online": "在线"
+    },
+    "sortBy": "排序方式",
+    "sortOptions": {
+      "newest": "最新",
+      "oldest": "最早",
+      "nameAsc": "名称 A-Z",
+      "nameDesc": "名称 Z-A"
+    },
+    "noResults": "未找到符合条件的营地",
+    "viewDetails": "查看详情",
+    "addToFavorites": "添加到收藏",
+    "share": "分享",
+    "rating": "评分",
+    "reviews": "评价",
+    "location": "地点",
+    "category": "类别"
+  },
+  "comments": {
+    "title": "评价与评论",
+    "addComment": "添加评论",
+    "commentPlaceholder": "分享您的体验...",
+    "postComment": "发表评论",
+    "noComments": "暂无评论。成为第一个分享体验的人！",
+    "like": "赞",
+    "dislike": "踩",
+    "reply": "回复"
+  },
+  "ratings": {
+    "overallRating": "总体评分",
+    "quality": "质量",
+    "safety": "安全",
+    "facilities": "设施",
+    "rateThis": "为此营地评分",
+    "yourRating": "您的评分",
+    "submitRating": "提交评分"
+  },
+  "admin": {
+    "dashboard": "管理面板",
+    "totalCampsites": "营地总数",
+    "totalUsers": "用户总数",
+    "totalComments": "评论总数",
+    "recentActivity": "最近活动",
+    "manageCampsites": "管理营地",
+    "manageUsers": "管理用户",
+    "reports": "报告",
+    "settings": "设置"
+  },
+  "language": {
+    "switchTo": "切换到",
+    "english": "English",
+    "chinese": "中文"
+  }
+}

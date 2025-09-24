@@ -7,9 +7,12 @@ import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outlin
 import { useAuth } from '@/hooks/useAuth'
 import { signOut } from '@/lib/auth'
 import { Button } from '@/components/ui/Button'
+import { useTranslation } from '@/hooks/useTranslation'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import { toast } from 'react-hot-toast'
 
 export function Navbar() {
+  const { t, locale } = useTranslation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const { user, isAuthenticated, isAdmin } = useAuth()
@@ -18,7 +21,7 @@ export function Navbar() {
   const handleSignOut = async () => {
     try {
       await signOut()
-      toast.success('Signed out successfully')
+      toast.success(t('signOutSuccess'))
       setUserMenuOpen(false)
     } catch (error) {
       toast.error('Failed to sign out')
@@ -26,9 +29,9 @@ export function Navbar() {
   }
 
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Campsites', href: '/campsites' },
-    ...(isAdmin ? [{ name: 'Admin', href: '/admin' }] : []),
+    { name: t('nav.home'), href: `/${locale}` },
+    { name: t('nav.campsites'), href: `/${locale}/campsites` },
+    ...(isAdmin ? [{ name: t('nav.admin'), href: `/${locale}/admin` }] : []),
   ]
 
   // Check if we're in test mode
@@ -44,7 +47,7 @@ export function Navbar() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="py-2 text-center">
               <span className="text-sm text-yellow-800">
-                🧪 <strong>Test Mode:</strong> Running with mock data (no Supabase required)
+                🧪 <strong>{t('testMode')}</strong>
               </span>
             </div>
           </div>
@@ -54,7 +57,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
+            <Link href={`/${locale}`} className="flex items-center">
               <span className="text-xl font-bold text-primary-600">StudyTour</span>
             </Link>
 
@@ -76,6 +79,8 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
+
             {isAuthenticated ? (
               <div className="relative">
                 <button
@@ -100,26 +105,26 @@ export function Navbar() {
                       {user?.nickname || user?.email}
                     </div>
                     <Link
-                      href="/profile"
+                      href={`/${locale}/profile`}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => setUserMenuOpen(false)}
                     >
-                      Profile
+                      {t('nav.profile')}
                     </Link>
                     <button
                       onClick={handleSignOut}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      Sign out
+                      {t('nav.signOut')}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <div className="flex space-x-4">
-                <Link href="/auth">
+                <Link href={`/${locale}/auth`}>
                   <Button variant="outline" size="sm">
-                    Sign In
+                    {t('nav.signIn')}
                   </Button>
                 </Link>
               </div>

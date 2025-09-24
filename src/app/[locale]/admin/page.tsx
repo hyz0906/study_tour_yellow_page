@@ -10,13 +10,34 @@ import {
 import { AdminLayout } from '@/components/admin/AdminLayout'
 import { StatsCard } from '@/components/admin/StatsCard'
 import { getAdminStats, getRecentComments, getRecentUsers, type AdminStats } from '@/lib/admin'
+
+// Define types for the data
+interface Comment {
+  id: string
+  content: string
+  created_at: string
+  users?: {
+    nickname?: string
+  }
+  campsites?: {
+    name: string
+  }
+}
+
+interface User {
+  id: string
+  email: string
+  nickname?: string
+  role: string
+  created_at: string
+}
 import { formatDistanceToNow } from 'date-fns'
 import { toast } from 'react-hot-toast'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null)
-  const [recentComments, setRecentComments] = useState([])
-  const [recentUsers, setRecentUsers] = useState([])
+  const [recentComments, setRecentComments] = useState<Comment[]>([])
+  const [recentUsers, setRecentUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -104,7 +125,7 @@ export default function AdminDashboard() {
                 {recentComments.length === 0 ? (
                   <p className="text-sm text-gray-500">No recent comments</p>
                 ) : (
-                  recentComments.map((comment: any) => (
+                  recentComments.map((comment) => (
                     <div key={comment.id} className="border-b border-gray-200 pb-4 last:border-b-0">
                       <div className="flex items-start space-x-3">
                         <div className="flex-1 min-w-0">
@@ -138,7 +159,7 @@ export default function AdminDashboard() {
                 {recentUsers.length === 0 ? (
                   <p className="text-sm text-gray-500">No recent users</p>
                 ) : (
-                  recentUsers.map((user: any) => (
+                  recentUsers.map((user) => (
                     <div key={user.id} className="border-b border-gray-200 pb-4 last:border-b-0">
                       <div className="flex items-center space-x-3">
                         <div className="flex-1 min-w-0">

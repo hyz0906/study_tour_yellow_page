@@ -1,0 +1,123 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "more": "More",
+    "less": "Less"
+  },
+  "nav": {
+    "home": "Home",
+    "campsites": "Campsites",
+    "admin": "Admin",
+    "profile": "Profile",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "testMode": "Test Mode: Running with mock data (no Supabase required)"
+  },
+  "home": {
+    "heroTitle": "Discover Amazing",
+    "heroSubtitle": "Study Tours & Camps",
+    "heroDescription": "Find the perfect educational adventure from our curated collection of study tours, summer camps, and international programs worldwide.",
+    "exploreCampsites": "Explore Campsites",
+    "joinCommunity": "Join Community",
+    "whyChooseTitle": "Why Choose StudyTour?",
+    "whyChooseDescription": "We make it easy to find and compare educational programs worldwide",
+    "searchFilterTitle": "Easy Search & Filter",
+    "searchFilterDescription": "Find programs by location, category, age group, and ratings with our powerful search tools",
+    "reviewsTitle": "Real Reviews & Ratings",
+    "reviewsDescription": "Read authentic reviews from parents and students who have experienced these programs firsthand",
+    "globalNetworkTitle": "Global Network",
+    "globalNetworkDescription": "Access programs from around the world, from local summer camps to international study tours",
+    "ctaTitle": "Ready to Start Your Adventure?",
+    "ctaDescription": "Join thousands of families who have found their perfect educational experience through StudyTour",
+    "browseCampsites": "Browse Campsites Now"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "fullName": "Full Name",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signInWithGoogle": "Continue with Google",
+    "signInSuccess": "Signed in successfully",
+    "signUpSuccess": "Account created successfully",
+    "signOutSuccess": "Signed out successfully",
+    "authError": "Authentication failed"
+  },
+  "campsites": {
+    "title": "Study Tours & Camps",
+    "searchPlaceholder": "Search campsites...",
+    "allCountries": "All Countries",
+    "allCategories": "All Categories",
+    "categories": {
+      "summer": "Summer",
+      "winter": "Winter",
+      "study": "Study",
+      "online": "Online"
+    },
+    "sortBy": "Sort by",
+    "sortOptions": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A"
+    },
+    "noResults": "No campsites found matching your criteria",
+    "viewDetails": "View Details",
+    "addToFavorites": "Add to Favorites",
+    "share": "Share",
+    "rating": "Rating",
+    "reviews": "Reviews",
+    "location": "Location",
+    "category": "Category"
+  },
+  "comments": {
+    "title": "Reviews & Comments",
+    "addComment": "Add a Comment",
+    "commentPlaceholder": "Share your experience...",
+    "postComment": "Post Comment",
+    "noComments": "No comments yet. Be the first to share your experience!",
+    "like": "Like",
+    "dislike": "Dislike",
+    "reply": "Reply"
+  },
+  "ratings": {
+    "overallRating": "Overall Rating",
+    "quality": "Quality",
+    "safety": "Safety",
+    "facilities": "Facilities",
+    "rateThis": "Rate this campsite",
+    "yourRating": "Your Rating",
+    "submitRating": "Submit Rating"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "totalCampsites": "Total Campsites",
+    "totalUsers": "Total Users",
+    "totalComments": "Total Comments",
+    "recentActivity": "Recent Activity",
+    "manageCampsites": "Manage Campsites",
+    "manageUsers": "Manage Users",
+    "reports": "Reports",
+    "settings": "Settings"
+  },
+  "language": {
+    "switchTo": "Switch to",
+    "english": "English",
+    "chinese": "中文"
+  }
+}
