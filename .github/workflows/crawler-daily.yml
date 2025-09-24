@@ -1,0 +1,141 @@
+name: Daily Campsite Crawler
+
+on:
+  schedule:
+    # Run daily at 2:00 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      crawl_type:
+        description: 'Type of crawl to perform'
+        required: true
+        default: 'seed'
+        type: choice
+        options:
+        - seed
+        - discover
+        - full
+      max_urls:
+        description: 'Maximum URLs to crawl (0 for no limit)'
+        required: false
+        default: '50'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('crawler/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install dependencies
+      run: |
+        cd crawler
+        pip install -r requirements.txt
+        playwright install chromium
+
+    - name: Create environment file
+      run: |
+        cd crawler
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+        echo "SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}" >> .env
+
+    - name: Run seed URL crawl
+      if: ${{ github.event.inputs.crawl_type == 'seed' || github.event.inputs.crawl_type == '' }}
+      run: |
+        cd crawler
+        python -m crawler.main \
+          --seed-only \
+          --output "results-seed-$(date +%Y%m%d).json" \
+          --log-level INFO
+
+    - name: Run discovery crawl
+      if: ${{ github.event.inputs.crawl_type == 'discover' }}
+      run: |
+        cd crawler
+        python -m crawler.main \
+          --discover "https://www.studyabroad.com" \
+          --max-depth 2 \
+          --output "results-discover-$(date +%Y%m%d).json" \
+          --log-level INFO
+
+    - name: Run full crawl
+      if: ${{ github.event.inputs.crawl_type == 'full' }}
+      run: |
+        cd crawler
+        python -m crawler.main \
+          --seed-only \
+          --screenshot \
+          --output "results-full-$(date +%Y%m%d).json" \
+          --log-level INFO
+
+    - name: Upload crawl results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: crawl-results-${{ github.run_number }}
+        path: |
+          crawler/results-*.json
+          crawler/crawler.log
+        retention-days: 30
+
+    - name: Notify on failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const title = 'Daily Crawler Failed';
+          const body = `The daily campsite crawler failed on ${new Date().toISOString()}.
+
+          **Run Details:**
+          - Run ID: ${{ github.run_id }}
+          - Workflow: ${{ github.workflow }}
+          - Commit: ${{ github.sha }}
+
+          Please check the logs for details.`;
+
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['bug', 'crawler']
+          });
+
+    - name: Clean up old artifacts
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Keep only the last 10 artifacts
+          const artifacts = await github.rest.actions.listArtifactsForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+
+          const crawlArtifacts = artifacts.data.artifacts
+            .filter(artifact => artifact.name.startsWith('crawl-results-'))
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+          // Delete artifacts older than the 10 most recent
+          for (const artifact of crawlArtifacts.slice(10)) {
+            await github.rest.actions.deleteArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: artifact.id,
+            });
+            console.log(`Deleted artifact: ${artifact.name}`);
+          }

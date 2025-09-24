@@ -1,0 +1,154 @@
+name: Manual Crawler Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: 'URLs to crawl (comma-separated)'
+        required: false
+        type: string
+      crawl_mode:
+        description: 'Crawling mode'
+        required: true
+        default: 'standard'
+        type: choice
+        options:
+        - standard
+        - discovery
+        - screenshot
+      max_depth:
+        description: 'Maximum discovery depth'
+        required: false
+        default: '2'
+        type: string
+      notify_on_complete:
+        description: 'Create issue with results'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  manual-crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        cd crawler
+        pip install -r requirements.txt
+        playwright install chromium
+
+    - name: Create environment file
+      run: |
+        cd crawler
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+        echo "SUPABASE_SERVICE_KEY=${{ secrets.SUPABASE_SERVICE_KEY }}" >> .env
+
+    - name: Prepare URL list
+      if: ${{ github.event.inputs.urls }}
+      run: |
+        cd crawler
+        echo "${{ github.event.inputs.urls }}" | tr ',' '\n' > custom_urls.txt
+
+    - name: Run standard crawl
+      if: ${{ github.event.inputs.crawl_mode == 'standard' }}
+      run: |
+        cd crawler
+        if [ -f "custom_urls.txt" ]; then
+          python -m crawler.main --urls custom_urls.txt --output "manual-results-$(date +%Y%m%d-%H%M).json"
+        else
+          python -m crawler.main --seed-only --output "manual-results-$(date +%Y%m%d-%H%M).json"
+        fi
+
+    - name: Run discovery crawl
+      if: ${{ github.event.inputs.crawl_mode == 'discovery' }}
+      run: |
+        cd crawler
+        if [ -f "custom_urls.txt" ]; then
+          URL=$(head -n1 custom_urls.txt)
+          python -m crawler.main --discover "$URL" --max-depth ${{ github.event.inputs.max_depth }} --output "manual-discovery-$(date +%Y%m%d-%H%M).json"
+        else
+          python -m crawler.main --discover "https://www.studyabroad.com" --max-depth ${{ github.event.inputs.max_depth }} --output "manual-discovery-$(date +%Y%m%d-%H%M).json"
+        fi
+
+    - name: Run screenshot crawl
+      if: ${{ github.event.inputs.crawl_mode == 'screenshot' }}
+      run: |
+        cd crawler
+        if [ -f "custom_urls.txt" ]; then
+          python -m crawler.main --urls custom_urls.txt --screenshot --output "manual-screenshot-$(date +%Y%m%d-%H%M).json"
+        else
+          python -m crawler.main --seed-only --screenshot --output "manual-screenshot-$(date +%Y%m%d-%H%M).json"
+        fi
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: manual-crawl-${{ github.run_number }}
+        path: |
+          crawler/manual-*.json
+          crawler/crawler.log
+        retention-days: 7
+
+    - name: Parse results for notification
+      if: ${{ github.event.inputs.notify_on_complete == 'true' }}
+      id: parse_results
+      run: |
+        cd crawler
+        RESULT_FILE=$(ls manual-*.json | head -n1)
+        if [ -f "$RESULT_FILE" ]; then
+          TOTAL=$(jq -r '.total_urls' "$RESULT_FILE")
+          SUCCESSFUL=$(jq -r '.successful' "$RESULT_FILE")
+          CAMPSITES=$(jq -r '.campsites_found' "$RESULT_FILE")
+          SUCCESS_RATE=$(jq -r '.success_rate' "$RESULT_FILE")
+
+          echo "total_urls=$TOTAL" >> $GITHUB_OUTPUT
+          echo "successful=$SUCCESSFUL" >> $GITHUB_OUTPUT
+          echo "campsites_found=$CAMPSITES" >> $GITHUB_OUTPUT
+          echo "success_rate=$SUCCESS_RATE" >> $GITHUB_OUTPUT
+          echo "result_file=$RESULT_FILE" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Create results issue
+      if: ${{ github.event.inputs.notify_on_complete == 'true' }}
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const title = `Manual Crawler Run Results - ${new Date().toDateString()}`;
+
+          const body = `## Manual Crawler Run Complete 🚀
+
+          **Run Details:**
+          - Mode: ${{ github.event.inputs.crawl_mode }}
+          - URLs: ${{ github.event.inputs.urls || 'Seed URLs' }}
+          - Workflow Run: ${{ github.run_id }}
+
+          **Results:**
+          - Total URLs: ${{ steps.parse_results.outputs.total_urls }}
+          - Successful: ${{ steps.parse_results.outputs.successful }}
+          - Campsites Found: ${{ steps.parse_results.outputs.campsites_found }}
+          - Success Rate: ${{ steps.parse_results.outputs.success_rate }}%
+
+          **Artifacts:**
+          - Results file: \`${{ steps.parse_results.outputs.result_file }}\`
+          - Download artifacts from the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+          _This issue was automatically created by the manual crawler workflow._`;
+
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['crawler', 'automated']
+          });
