@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from '@/hooks/useTranslation'
 
 export default function CampsitesManagement() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [campsites, setCampsites] = useState<Campsite[]>([])
   const [loading, setLoading] = useState(true)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -88,8 +88,7 @@ export default function CampsitesManagement() {
 
           <Button
             onClick={() => {
-              // Navigate to create page - will implement this route
-              window.location.href = window.location.pathname + '/create'
+              window.location.href = `/${locale}/admin/campsites/create`
             }}
           >
             <PlusIcon className="h-5 w-5 mr-2" />
@@ -174,8 +173,7 @@ export default function CampsitesManagement() {
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              // Navigate to edit page - will implement this route
-                              window.location.href = window.location.pathname + '/' + campsite.id + '/edit'
+                              window.location.href = `/${locale}/admin/campsites/${campsite.id}/edit`
                             }}
                           >
                             <PencilIcon className="h-4 w-4" />
