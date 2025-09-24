@@ -2,7 +2,7 @@ import React from 'react'
 import { clsx } from 'clsx'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'outline-white'
   size?: 'sm' | 'md' | 'lg'
   loading?: boolean
   children: React.ReactNode
@@ -20,10 +20,11 @@ export function Button({
   const baseStyles = 'inline-flex items-center justify-center font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
 
   const variants = {
-    primary: 'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500',
-    secondary: 'bg-secondary-600 hover:bg-secondary-700 text-white focus:ring-secondary-500',
-    outline: 'border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 focus:ring-primary-500',
-    ghost: 'hover:bg-gray-100 text-gray-700 focus:ring-primary-500',
+    primary: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    secondary: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
+    outline: 'border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 focus:ring-blue-500',
+    ghost: 'hover:bg-gray-100 text-gray-700 focus:ring-blue-500',
+    'outline-white': 'border border-white bg-transparent text-white hover:bg-white hover:text-blue-600 focus:ring-white',
   }
 
   const sizes = {

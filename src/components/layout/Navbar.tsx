@@ -31,8 +31,26 @@ export function Navbar() {
     ...(isAdmin ? [{ name: 'Admin', href: '/admin' }] : []),
   ]
 
+  // Check if we're in test mode
+  const isTestMode =
+    process.env.NEXT_PUBLIC_TEST_MODE === 'true' ||
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200">
+    <>
+      {isTestMode && (
+        <div className="bg-yellow-50 border-b border-yellow-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="py-2 text-center">
+              <span className="text-sm text-yellow-800">
+                🧪 <strong>Test Mode:</strong> Running with mock data (no Supabase required)
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -145,5 +163,6 @@ export function Navbar() {
         )}
       </div>
     </nav>
+    </>
   )
 }

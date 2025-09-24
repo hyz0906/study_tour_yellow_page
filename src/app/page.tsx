@@ -23,7 +23,7 @@ export default function HomePage() {
                 </Button>
               </Link>
               <Link href="/auth">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white hover:text-primary-600">
+                <Button size="lg" variant="outline-white">
                   Join Community
                 </Button>
               </Link>
