@@ -1,0 +1,14 @@
+# Supabase Configuration
+# Replace these with your actual Supabase project credentials
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_actual_anon_key_here
+
+# Optional: For server-side operations (get from Supabase Dashboard > Settings > API > service_role)
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Optional: For production deployment
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your_nextauth_secret
+
+# Set to false or remove this line to disable test mode
+# NEXT_PUBLIC_TEST_MODE=false
